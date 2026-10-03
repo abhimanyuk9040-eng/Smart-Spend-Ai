@@ -6,34 +6,19 @@ import time
 
 from action_tool import send_email
 
-
-# -----------------------------
-# Page settings
-# -----------------------------
 st.set_page_config(
     page_title="SmartSpend AI",
     page_icon="💰"
 )
 
-
-# -----------------------------
 # Gemini setup
-# -----------------------------
 client = genai.Client(
     api_key=st.secrets["GEMINI_API_KEY"]
 )
 
-
-# -----------------------------
-# App title
-# -----------------------------
 st.title("SmartSpend AI 💰")
 st.write("Understand where your money goes.")
 
-
-# -----------------------------
-# Upload receipt
-# -----------------------------
 uploaded_file = st.file_uploader(
     "📸 Upload your receipt or bill",
     type=["jpg", "jpeg", "png"]
@@ -130,10 +115,6 @@ if uploaded_file is not None:
                     match.group(1)
                 )
 
-
-# -----------------------------
-# Expense Analysis
-# -----------------------------
 if "receipt_analysis" in st.session_state:
 
     st.subheader("📊 Expense Analysis")
@@ -143,9 +124,6 @@ if "receipt_analysis" in st.session_state:
     )
 
 
-# -----------------------------
-# Bill Splitter
-# -----------------------------
 if "total" in st.session_state:
 
     st.subheader("👥 Split Your Bill")
@@ -172,10 +150,6 @@ if "total" in st.session_state:
             f"Each person should pay **₹{per_person:.2f}**"
         )
 
-
-# -----------------------------
-# Email Summary
-# -----------------------------
 if "receipt_analysis" in st.session_state:
 
     st.subheader("📧 Send Expense Summary")
