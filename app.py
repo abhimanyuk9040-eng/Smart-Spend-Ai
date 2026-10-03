@@ -6,19 +6,34 @@ import time
 
 from action_tool import send_email
 
+
+# -----------------------------
+# Page settings
+# -----------------------------
 st.set_page_config(
     page_title="SmartSpend AI",
     page_icon="💰"
 )
 
+
+# -----------------------------
 # Gemini setup
+# -----------------------------
 client = genai.Client(
     api_key=st.secrets["GEMINI_API_KEY"]
 )
 
+
+# -----------------------------
+# App title
+# -----------------------------
 st.title("SmartSpend AI 💰")
 st.write("Understand where your money goes.")
 
+
+# -----------------------------
+# Upload receipt
+# -----------------------------
 uploaded_file = st.file_uploader(
     "📸 Upload your receipt or bill",
     type=["jpg", "jpeg", "png"]
@@ -93,7 +108,7 @@ if uploaded_file is not None:
                     else:
 
                         st.error(
-                            "Gemini is currently unavailable. Please try again later."
+                            f"Gemini error: {e}"
                         )
 
                         st.stop()
@@ -115,6 +130,10 @@ if uploaded_file is not None:
                     match.group(1)
                 )
 
+
+# -----------------------------
+# Expense Analysis
+# -----------------------------
 if "receipt_analysis" in st.session_state:
 
     st.subheader("📊 Expense Analysis")
@@ -124,6 +143,9 @@ if "receipt_analysis" in st.session_state:
     )
 
 
+# -----------------------------
+# Bill Splitter
+# -----------------------------
 if "total" in st.session_state:
 
     st.subheader("👥 Split Your Bill")
@@ -131,7 +153,7 @@ if "total" in st.session_state:
     total = st.session_state["total"]
 
     st.write(
-        f"💰 **Total Bill: ₹{total:.2f}**"
+        f"💰 Total Bill: ₹{total:.2f}"
     )
 
     people = st.number_input(
@@ -147,9 +169,13 @@ if "total" in st.session_state:
         st.session_state["per_person"] = per_person
 
         st.success(
-            f"Each person should pay **₹{per_person:.2f}**"
+            f"Each person should pay ₹{per_person:.2f}"
         )
 
+
+# -----------------------------
+# Email Summary
+# -----------------------------
 if "receipt_analysis" in st.session_state:
 
     st.subheader("📧 Send Expense Summary")
@@ -160,7 +186,7 @@ if "receipt_analysis" in st.session_state:
 
     if st.button("📨 Send Summary"):
 
-        if email == "":
+        if email.strip() == "":
 
             st.warning(
                 "Please enter an email address."

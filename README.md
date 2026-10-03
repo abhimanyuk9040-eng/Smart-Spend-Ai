@@ -87,7 +87,7 @@ GitHub	Project repository
 SmartSpend-AI/
 │
 ├── .streamlit/
-│   └── secrets.toml
+│   └── secrets.toml   ← local only, not uploaded to GitHub
 │
 ├── app.py
 ├── prompts.py
